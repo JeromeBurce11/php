@@ -3,7 +3,7 @@
     include("inventory.php");
     $obj = new inventory();
 
-    $add= $obj->addinventory();
+    $add= $obj->getespecificdata();
     echo $add;
     // $showlist= $obj->showinventorylist();
     // echo $showlist;

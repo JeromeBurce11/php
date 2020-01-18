@@ -4,25 +4,28 @@
 <script src="jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <?php
+
+    require "config.php";
+    /////////////////////////////
     if(!isset($_SESSION)){
         session_start();
         if(!$_SESSION['login']){
         header('Location: loginForm.php');
         }
-        $connection = mysqli_connect("localhost", "root", "", "inventory");
         if(isset($_POST['submit'])){ 
+           $category = $_POST['category'];
            $item = $_POST['item'];
             $quantity = $_POST['quantity'];
             $date = $_POST['datedone'];
              $personel = $_POST['personel'];
-            if(empty($_POST["item"])||empty($_POST["quantity"])||empty($_POST["datedone"])||empty($_POST["personal"])){
+            if(empty($_POST["category"])|| empty($_POST["item"])||empty($_POST["quantity"])||empty($_POST["datedone"])||empty($_POST["personal"])){
                echo '<script type="text/javascript">';
                echo 'setTimeout(function () { swal("Error","Inputs must require!","error");';
                echo '},500);</script>';
             }
             if($item !="" && $quantity !="" && $date !="" && $personel!=""){   
-                $sqldatabase = "INSERT INTO list (item, quantity, datedone, personel) 
-                   VALUES ('$item', '$quantity', '$date', '$personel')";
+                $sqldatabase = "INSERT INTO list (category,item, quantity, datedone, personel) 
+                   VALUES ('$category','$item', '$quantity', '$date', '$personel')";
                 $query = mysqli_query($connection, $sqldatabase);
                 echo '<script type="text/javascript">';
                echo 'setTimeout(function () { swal("Successfully Added!","success");';
@@ -49,7 +52,13 @@
   <div class="card-body">
     <form class="form" action="Add.php" method="post">
     <h2>Add new inventory</h2><br>
-
+    <label>Type of Item:</label>
+        <select name="category">
+            <option value="Beverages">Beverages</option>
+            <option value="Snacks">Snacks</option>
+            <option value="Soaps">Soaps</option>
+            <option value="Detergents">Detergents</option>
+        </select><br>
     <label>Item name:</label>
     <input class="input" name="item" type="text" value=""><br>
     <label>Quantity:</label>
@@ -58,7 +67,8 @@
     <input class="input" name="datedone" type="date" value="" placeholder="mm/dd/yy"><br>
     <label>Personel:</label>
     <input class="input" name="personel" type="text" value=""><br>
-    <input class="submit" name="submit" type="submit" value="Insert">
+      <!-- <a href='logout.php'><button class="btn btn-outline-success my-2 my-sm-0" >Logout</button></a> -->
+    <input class="btn btn-outline-success my-2 my-sm-0" name="submit" type="submit" value="Insert">
     </form>
     </div>
 </div>
